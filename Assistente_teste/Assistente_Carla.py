@@ -16,6 +16,7 @@
   # Versão: 0.1.5
 '''
 
+from types import NoneType
 import speech_recognition as reco
 from gtts import gTTS
 from playsound import playsound
@@ -70,7 +71,7 @@ def busca_wikipedia(frase):
   cria_audio(resultado)
   
   
-def fechar(frase):
+def fechar():
   frase = 'Tudo bem, volte sempre !'
   cria_audio(frase)
   
@@ -128,10 +129,13 @@ def ouvir_microfone():                                                          
 ## main
 if __name__ == "__main__":
   
-  while True:
+  primeiro_loop = True
+  
+  while primeiro_loop != False:
+    
     frase = ouvir_microfone()
     
-    if frase.lower() == 'carla':
+    if frase == 'Carla':
       frase = 'Oi, eu sou a Carla, em que posso te ajudar?'
       cria_audio(frase)
       
@@ -139,26 +143,29 @@ if __name__ == "__main__":
 
         frase = ouvir_microfone()
         
-        if frase.lower() in ['fechar', 'parar', 'fecha']:
-          fechar(frase)
-          break
-        
-        elif frase.lower() == 'que horas são':
-          horas(frase)
+        if frase != NoneType:
+            
+          if frase.lower() in ['fechar', 'parar', 'fecha']:
+            fechar()
+            primeiro_loop = False
+            break
           
-        elif frase.lower() == 'que dia é hoje':
-          dia_hoje(frase)
+          elif frase.lower() == 'que horas são':
+            horas(frase)
+            
+          elif frase.lower() == 'que dia é hoje':
+            dia_hoje(frase)
+            
+          elif frase.lower() in 'procure sobre':
+            busca_wikipedia(frase)
           
-        elif frase.lower() in 'procure sobre':
-          busca_wikipedia(frase)
-        
-        elif frase.lower() in 'calcule':
-          calcular(frase)
+          elif frase.lower() in 'calcule':
+            calcular(frase)
+          else:
+            nao_entendi()
+            
         else:
           nao_entendi()
-          
-    elif frase.lower() in ['fechar', 'parar', 'fecha']:
-      fechar(frase)
-      break
+    
     else:
       pass
